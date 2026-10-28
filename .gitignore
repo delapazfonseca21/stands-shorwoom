@@ -1,0 +1,20 @@
+# Sistema / editor
+Thumbs.db
+Desktop.ini
+.DS_Store
+.vscode/
+.idea/
+*.swp
+
+# Basura temporal
+*.log
+*.tmp
+~$*
+*.bak
+
+# Node (por si acaso se añaden herramientas en el futuro)
+node_modules/
+package-lock.json
+
+# Nota: index.html se regenera con `node build-standalone.mjs`
+# pero se mantiene en el repo para abrir con doble click y servir vía GitHub Pages.

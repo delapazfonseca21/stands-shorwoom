@@ -1,0 +1,229 @@
+﻿.stshow {
+  --stshow-h: 62vh;
+  --stshow-ink: #23282e;
+  --stshow-ink-soft: rgba(32, 40, 48, 0.72);
+  --stshow-surface: #ffffff;
+  --stshow-shadow: 0 10px 26px rgba(23, 34, 46, 0.16);
+  position: relative;
+  width: 100%;
+  height: var(--stshow-h);
+  min-height: 340px;
+  overflow: hidden;
+  border-radius: inherit;
+  background: linear-gradient(180deg, #f7f8fa 0%, #eef0f3 100%);
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.stshow__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: grab;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.stshow.is-ready .stshow__canvas { opacity: 1; }
+.stshow.is-dragging .stshow__canvas { cursor: grabbing; }
+
+.stshow__ui {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.55s ease;
+}
+
+.stshow.is-ready .stshow__ui { opacity: 1; }
+
+.stshow__title {
+  position: absolute;
+  top: 22px;
+  left: 28px;
+  font-family: inherit;
+  font-size: 21px;
+  font-weight: 650;
+  letter-spacing: 0.2px;
+  line-height: 1.15;
+  color: var(--stshow-ink);
+  text-shadow: 0 1px 10px rgba(255, 255, 255, 0.9), 0 1px 3px rgba(255, 255, 255, 0.7);
+  pointer-events: none;
+  z-index: 5;
+  max-width: 70%;
+}
+
+.stshow__badges,
+.stshow__badge {
+  margin: 0;
+  padding: 0;
+}
+
+.stshow__badge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 10px;
+  background: none;
+  border: 0;
+  font: inherit;
+  color: var(--stshow-ink);
+  cursor: pointer;
+  pointer-events: auto;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.34s ease, visibility 0s linear 0.34s;
+  will-change: transform;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.stshow__badge.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.34s ease;
+}
+
+.stshow__badge-chev {
+  width: 26px;
+  height: 26px;
+  display: block;
+  margin-bottom: -4px;
+  filter: drop-shadow(0 3px 5px rgba(23, 34, 46, 0.18));
+}
+
+.stshow__badge-chev path {
+  fill: none;
+  stroke: #6d737a;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.stshow__badge.is-focus .stshow__badge-chev path { stroke: var(--stshow-ink); }
+.stshow__badge-chev { animation: stshow-hop 1.7s ease-in-out infinite; animation-delay: calc(var(--wave, 0) * 0.11s); }
+
+.stshow__badge-logo {
+  width: 62px;
+  height: 62px;
+  border-radius: 15px;
+  background-color: var(--stshow-surface);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 62% auto;
+  box-shadow: 0 5px 14px rgba(23, 34, 46, 0.14), inset 0 0 0 1px rgba(23, 34, 46, 0.05);
+  display: grid;
+  place-items: center;
+  font: 600 20px/1 system-ui, sans-serif;
+  color: #52585f;
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s ease;
+}
+
+.stshow__badge-name {
+  max-width: 128px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.25;
+  text-align: center;
+  color: var(--stshow-ink-soft);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color 0.28s ease, font-weight 0.28s ease;
+}
+
+.stshow__badge.is-focus .stshow__badge-logo {
+  transform: scale(1.13);
+  box-shadow: 0 9px 22px rgba(23, 34, 46, 0.2), inset 0 0 0 1px rgba(23, 34, 46, 0.05);
+}
+
+.stshow__badge.is-focus .stshow__badge-name {
+  color: var(--stshow-ink);
+  font-weight: 700;
+}
+
+.stshow__arrow {
+  position: absolute;
+  top: 50%;
+  width: 46px;
+  height: 46px;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(5px);
+  box-shadow: 0 4px 14px rgba(23, 34, 46, 0.16), inset 0 0 0 1px rgba(23, 34, 46, 0.06);
+  color: var(--stshow-ink);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  pointer-events: auto;
+  padding: 0;
+  transition: transform 0.22s ease, background 0.22s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.stshow__arrow:hover { transform: translateY(-50%) scale(1.07); background: #ffffff; }
+.stshow__arrow:active { transform: translateY(-50%) scale(0.94); }
+.stshow__arrow--prev { left: 14px; }
+.stshow__arrow--next { right: 14px; }
+.stshow__arrow svg { width: 20px; height: 20px; display: block; }
+.stshow__arrow svg path { fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+
+.stshow__fallback {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-content: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 28px;
+  overflow: auto;
+}
+
+.stshow.no-webgl .stshow__fallback { display: flex; }
+.stshow.no-webgl .stshow__canvas,
+.stshow.no-webgl .stshow__ui { display: none; }
+
+.stshow__fallback-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 108px;
+  padding: 10px;
+  background: var(--stshow-surface);
+  border-radius: 14px;
+  box-shadow: 0 3px 10px rgba(23, 34, 46, 0.1);
+}
+
+.stshow__fallback-logo { width: 56px; height: 56px; border-radius: 12px; background-position: center; background-repeat: no-repeat; background-size: contain; font: 600 18px/1 system-ui, sans-serif; color: #52585f; display: grid; place-items: center; }
+.stshow__fallback-name { font-size: 11px; text-align: center; color: var(--stshow-ink-soft); }
+
+.stshow.reduce-motion .stshow__badge-chev { animation: none; }
+.stshow.reduce-motion * { transition-duration: 0.01s !important; }
+
+@keyframes stshow-hop {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(5px); }
+}
+
+@media (max-width: 620px) {
+  .stshow__title { top: 14px; left: 16px; font-size: 16px; }
+  .stshow { --stshow-h: 56vh; min-height: 300px; }
+  .stshow__badge-logo { width: 48px; height: 48px; border-radius: 12px; }
+  .stshow__badge-name { max-width: 92px; font-size: 10.5px; }
+  .stshow__badge-chev { width: 21px; height: 21px; }
+  .stshow__badge { gap: 5px; }
+  .stshow__arrow { width: 38px; height: 38px; }
+  .stshow__arrow--prev { left: 8px; }
+  .stshow__arrow--next { right: 8px; }
+}
